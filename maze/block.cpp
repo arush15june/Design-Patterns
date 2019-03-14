@@ -6,7 +6,6 @@
         - arush15june
 
     TODO:
-        Use std::array<int, 2> in maps.
         Use std::shared_ptr or std::unique_ptr.
 */
 #include<iostream>
@@ -32,9 +31,7 @@ enum class Side {
     SOUTH_EAST,
 };
 
-// TODO: Just use std::array<int, 2> instead of sides.
-
-std::map<Side, std::vector<int>> side_map = {
+std::map<Side, std::array<int, 2>> side_map = {
     {Side::NORTH, {0, 1} },
     {Side::NORTH_EAST, {0, 2} },
     {Side::EAST, {1, 2} },
@@ -46,7 +43,7 @@ std::map<Side, std::vector<int>> side_map = {
     {Side::NORTH_WEST, {0, 0} },
 };
 
-std::map<std::vector<int>, Side> reverse_side_map = {
+std::map<std::array<int, 2>, Side> reverse_side_map = {
     {{0, 1}, Side::NORTH},
     {{0, 2}, Side::NORTH_EAST},
     {{1, 1}, Side::CENTER},
@@ -59,11 +56,11 @@ std::map<std::vector<int>, Side> reverse_side_map = {
 };
 
 Side index_to_side(int x, int y) {
-    std::vector<int> query_pos = {x, y};
+    std::array<int, 2> query_pos = {x, y};
     return reverse_side_map[query_pos];
 }
 
-std::vector<int> side_to_index(Side s) {
+std::array<int, 2> side_to_index(Side s) {
     return side_map[s];
 }
 
@@ -278,7 +275,7 @@ public:
             assign new container.
         */
         auto el_side = el->getSide();
-        std::vector<int> mapped_index = side_to_index(el_side);
+        std::array<int, 2> mapped_index = side_to_index(el_side);
         
         int x = mapped_index[0];
         int y = mapped_index[1];
@@ -308,7 +305,7 @@ public:
         pos_y = y;
     }
 
-    std::vector<int> getPosition() {
+    std::array<int, 2> getPosition() {
         return { pos_x, pos_y };
     }
 };
