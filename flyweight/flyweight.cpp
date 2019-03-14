@@ -8,6 +8,9 @@
 #include<string>
 #include<map>
 
+#define key_type Side
+#define val_type std::string
+
 enum Side {
     NORTH_WEST,
     NORTH,
@@ -20,7 +23,6 @@ enum Side {
     SOUTH_EAST,
 };
 
-template<typename key_type = Side, typename val_type = std::string>
 class Element {
     /*
         Stateless element containing all representations
@@ -62,7 +64,7 @@ std::map<Side, std::string> NULL_REPRESENTATIONS = {
     { NORTH_WEST, "" },
 };
 
-Element<>* NULL_ELEMENT = new Element<>(NULL_REPRESENTATIONS);
+Element* NULL_ELEMENT = new Element(NULL_REPRESENTATIONS);
 
 // WALL Element
 std::map<Side, std::string> WALL_REPRESENTATIONS = {
@@ -77,7 +79,7 @@ std::map<Side, std::string> WALL_REPRESENTATIONS = {
     { CENTER, " " },
 };
 
-Element<>* WALL_ELEMENT = new Element<>(WALL_REPRESENTATIONS);
+Element* WALL_ELEMENT = new Element(WALL_REPRESENTATIONS);
 
 class ElementContainer {
     /*
@@ -92,9 +94,9 @@ class ElementContainer {
     */
 protected:
     Side state;
-    Element<>* el_proxy;
+    Element* el_proxy;
 public:
-    ElementContainer(Side side, Element<>* el) {
+    ElementContainer(Side side, Element* el) {
         setSide(side);
         setElement(el);
     }
@@ -113,7 +115,7 @@ public:
         state = side;
     }
 
-    void setElement(Element<>* el) {
+    void setElement(Element* el) {
         /*
             Set the element represented by the container.
         */
@@ -134,7 +136,7 @@ class NullContainer : public ElementContainer {
         Container for WALL_ELEMENT
     */
 public:
-    NullContainer(Side side, Element<>* el = NULL_ELEMENT) : ElementContainer(side, el) {}    
+    NullContainer(Side side, Element* el = NULL_ELEMENT) : ElementContainer(side, el) {}    
 };
 
 class WallContainer : public ElementContainer {
@@ -142,7 +144,7 @@ class WallContainer : public ElementContainer {
         Container for WALL_ELEMENT
     */
 public:
-    WallContainer(Side side, Element<>* el = WALL_ELEMENT) : ElementContainer(side, el) {}
+    WallContainer(Side side, Element* el = WALL_ELEMENT) : ElementContainer(side, el) {}
 };
 
 int main(int argc, char** argv) {
@@ -174,11 +176,11 @@ int main(int argc, char** argv) {
     WallContainer* wall_south = new WallContainer(SOUTH);
     WallContainer* wall_south_east = new WallContainer(SOUTH_EAST);
 
-    std::array<std::array<WallContainer*, 3>, 3> wall_matrix = {{
+    WallContainer[3][3] wall_matrix = {
         {wall_north_west, wall_north, wall_north_east},
         {wall_west, wall_center, wall_east},
         {wall_south_west, wall_south, wall_south_east}
-    }};
+    };
 
     std::cout<<"Creating matrix using WallContainer's"<<std::endl;
     for(auto &row: wall_matrix) {
